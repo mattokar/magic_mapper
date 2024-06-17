@@ -29,6 +29,11 @@ BUTTONS = {
     167: "record",
     168: "rewind",
     208: "fastforward",
+    103: "up",
+    108: "down",
+    105: "left",
+    106: "right",
+    412: "back",
     2: "1",
     3: "2",
     4: "3",
@@ -45,6 +50,7 @@ BUTTONS = {
     1043: "lg_channels",
     1086: "alexa",
     1117: "google",
+    1044: "rakuten",
     362: "guide",
     428: "voice",
     771: "channels",
@@ -274,8 +280,30 @@ def set_dynamic_tone_mapping(inputs):
     payload = {"category": "picture", "settings": {"hdrDynamicToneMapping": value}}
     luna_send(endpoint, payload)
 
+def toggle_piccap(inputs):
+    command = 'if /usr/bin/luna-send -n 1 \'luna://org.webosbrew.piccap.service/status\' \'{}\' | grep \'"isRunning":true\'; then /usr/bin/luna-send -n 1 \'luna://org.webosbrew.piccap.service/stop\' \'{}\' ; else /usr/bin/luna-send -n 1 \'luna://org.webosbrew.piccap.service/start\' \'{}\' ; fi'
+    os.popen(command)
 
-###################################
+def kodi_send(inputs, code):  
+    foreground_command = "luna-send -q 'appId' -n 1 -f luna://com.webos.service.applicationmanager/getForegroundAppInfo '{}' | fgrep -e \"appId\" | cut -d':' -f2 | xargs"
+    foreground_app = os.popen(foreground_command).read().strip()
+    print("foreground_app: %s" % foreground_app)
+    if foreground_app == "org.xbmc.kodi":
+        print("executing kodi action")
+        method = inputs.get("method")
+        params = inputs.get("params", "{}")
+        rpc_command = "curl -X POST -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"method\":\"" + method + "\",\"params\":" + params + "}' http://username:password@127.0.0.1:8080/jsonrpc"
+        os.popen(rpc_command)
+        send_keystroke(OUTPUT_DEVICE, 11) # so screensaver does not kicks in when navigating in kodi
+    else:
+        if "backup" in inputs:
+            backup = inputs.get("backup")
+            send_keystroke(OUTPUT_DEVICE, get_keycode(backup))
+        else:
+            print("returning event back to os")
+            send_keystroke(OUTPUT_DEVICE, code)
+
+# ##################################
 # Private Functions
 # The fuctions below here should not be called by magic_mapper_config.json
 ####################################
@@ -303,7 +331,10 @@ def fire_event(code, button_map):
     func_name = button["function"]
     print("func_name: %s" % func_name)
     inputs = button.get("inputs", {})
-    globals()[func_name](inputs)
+    if func_name == "kodi_send":
+        kodi_send(inputs, code)
+    else:
+        globals()[func_name](inputs)
 
 
 def luna_send(endpoint, payload):

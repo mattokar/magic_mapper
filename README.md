@@ -1,5 +1,14 @@
 # Magic Mapper
 
+## Why this fork exists
+
+WebOS version of Kodi has this annoying bug when it stops reacting to remote control input and you need to use Kore or some other app. It does not happen for everybody, but for me it was rock solid, everytime couple minutes after the start of Kodi. This Magic Mapper fork uses JsonRPC to control Kodi directly via remote control. Also convenient function to toggle [PicCap](https://github.com/TBSniller/piccap).
+
+This fork introduces two new functions:
+
+- [Kodi send](#kodi_send)
+- [Toggle PicCap](#toggle_piccap)
+
 ## Summary
 
 Magic Mapper is a script that will let you remap unused buttons on the LG Magic Remote. The script itself runs on your rooted LG TV, detects button presses, and allows you to control anything available via the [luna-send api](https://www.webosose.org/docs/tools/commands/luna-send/). Note your TV must be rooted to use this.
@@ -108,6 +117,37 @@ If you wanted to replace the Amazon Prime button with Plex:
 start_magic_mapper will redirect output to /tmp/magic_mapper.log
 
 ## Function List
+
+### kodi_send
+
+- is executed if Kodi is an app in foreground
+- fill in username and password on line 295 in [magic_mapper.py](magic_mapper.py). Or remove placeholders if not needed.
+- **known issue**: Home dashboard is not considered as app in foreground. Meaning if you navigate to dashboard directly from Kodi, system reports Kodi as app in foreground and jsonrpc kodi commands are executed. You need to open different app via dedicated button and then navigate to dashboard. 
+- Inputs:
+  - **method** name of [jsonrpc](https://kodi.wiki/view/JSON-RPC_API/v13) method
+  - **params** parameters of jsonrpc method in json format
+  - **backup** use if you want to remap the button outside of the Kodi, otherwise the original button code is returned to OS
+- Example:
+  ```
+  "blue": {
+    "function": "kodi_send",
+    "inputs": {
+      "backup": "play",
+      "method": "Input.ButtonEvent",
+      "params": "{\"button\": \"play\", \"keymap\": \"R1\"}"
+    }
+  }
+  ```
+
+### toggle_piccap
+
+- turn on/off [piccap](https://github.com/TBSniller/piccap) service
+- Example:
+  ```
+  "rakuten": {
+    "function": "toggle_piccap"
+  }
+  ```
 
 ### cycle_energy_mode
 

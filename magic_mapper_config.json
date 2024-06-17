@@ -1,52 +1,99 @@
 {
-  "yellow": {
-    "function": "cycle_energy_mode",
+  "netflix": {
+    "function": "launch_app",
     "inputs": {
-      "reverse_order": false,
-      "notifications": false
+      "app_id": "org.xbmc.kodi"
+    }
+  },
+  "prime": {
+    "function": "launch_app",
+    "inputs": {
+      "app_id": "youtube.leanback.v4"
+    }
+  },
+  "disney": {
+    "function": "screen_off"
+  },
+  "rakuten": {
+    "function": "toggle_piccap"
+  },
+  "google": {
+    "function": "press_button",
+    "inputs": {
+      "button": "exit"
     }
   },
   "blue": {
-    "function": "toggle_eye_comfort",
+    "function": "kodi_send",
     "inputs": {
-      "notifications": true
+      "backup": "play",
+      "method": "Input.ButtonEvent",
+      "params": "{\"button\": \"play\", \"keymap\": \"R1\"}"
+    }
+  },
+  "yellow": {
+    "function": "kodi_send",
+    "inputs": {
+      "backup": "pause",
+      "method": "Input.ExecuteAction",
+      "params": "{\"action\": \"fullscreen\"}"
     }
   },
   "red": {
-    "function": "reduce_oled_light",
-    "inputs": {
-      "increment": 10,
-      "disable_energy_savings": "True"
+    "function": "kodi_send",
+    "inputs": {   
+      "method": "Input.ButtonEvent",
+      "params": "{\"button\": \"menu\", \"keymap\": \"R1\"}"
     }
   },
   "green": {
-    "function": "increase_oled_light",
+    "function": "kodi_send",
     "inputs": {
-      "increment": 10,
-      "disable_energy_savings": "True"
+      "method": "Input.Home"
     }
   },
-  "9": {
-    "function": "screen_off"
-  },
-  "0-example remove all but the 0 to assign to button 0": {
-    "function": "send_ir_command",
+  "back": {
+    "function": "kodi_send",
     "inputs": {
-      "tv_input": "optical",
-      "keycode": "IR_KEY_POWER",
-      "device_type": "audio"
+      "method": "Input.ButtonEvent",
+      "params": "{\"button\": \"back\", \"keymap\": \"R1\"}"
     }
   },
-  "1-example remove all but the 1 to assign to button 1": {
-    "function": "launch_app",
+  "ok": {
+    "function": "kodi_send",
     "inputs": {
-      "app_id": "netflix"
+      "method": "Input.ButtonEvent",
+      "params": "{\"button\": \"select\", \"keymap\": \"R1\"}"
     }
   },
-  "EXAMPLE - replace this text with the button name 'prime' to have the prime button launch plex": {
-    "function": "launch_app",
+  "up": {
+    "function": "kodi_send",
     "inputs": {
-      "app_id": "cdp-30"
+      "method": "Input.ButtonEvent",
+      "params": "{\"button\": \"up\", \"keymap\": \"R1\"}"
+    }
+  },
+  "down": {
+    "function": "kodi_send",
+    "inputs": {
+      "method": "Input.ButtonEvent",
+      "params": "{\"button\": \"down\", \"keymap\": \"R1\"}"
+    }
+  },
+  "right": {
+    "function": "kodi_send",
+    "inputs": {
+      "method": "Input.ButtonEvent",
+      "params": "{\"button\": \"right\", \"keymap\": \"R1\"}"
+    }
+  },
+  "left": {
+    "function": "kodi_send",
+    "inputs": {
+      "method": "Input.ButtonEvent",
+      "params": "{\"button\": \"left\", \"keymap\": \"R1\"}"
     }
   }
 }
+
+
