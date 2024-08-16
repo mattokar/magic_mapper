@@ -294,7 +294,6 @@ def kodi_send(inputs, code):
         params = inputs.get("params", "{}")
         rpc_command = "curl -X POST -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"method\":\"" + method + "\",\"params\":" + params + "}' http://username:password@127.0.0.1:8080/jsonrpc"
         os.popen(rpc_command)
-        send_keystroke(OUTPUT_DEVICE, 11) # so screensaver does not kicks in when navigating in kodi
     else:
         if "backup" in inputs:
             backup = inputs.get("backup")
