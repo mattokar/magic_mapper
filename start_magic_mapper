@@ -11,3 +11,5 @@ if [ -f "/usr/bin/python" ]; then
 else
   nohup /usr/bin/python3 -u /home/root/magic_mapper.py > /tmp/magic_mapper.log 2>&1 &
 fi
+
+luna-send -a hello -f -n 1 luna://com.webos.notification/createToast '{"sourceId":"hello","message": "Magic Mapper started"}'
